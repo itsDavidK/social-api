@@ -1,12 +1,10 @@
 const { Schema, model, Types } = require('mongoose');
-
+const dateStyle = require('../utils/dateStyle');
 // Schema to create User model
 const reactionSchema = new Schema(
     {
         reactionId: {
-            //Use Mongoose's objectId data type
             type:Schema.Types.ObjectId,
-            //default value is set to a new Object Id
             default: () => new Types.ObjectId(),
         },
         reactionBody: {
@@ -21,13 +19,15 @@ const reactionSchema = new Schema(
         createdAt: {
             type: Date, 
             default: Date.now,
-            //Use getter method to format the timestamp on query
+            get: (timestamp) => dateStyle(timestamp),
         },
     },
     {
         toJSON: {
             getters: true,
         },
+        id: false,
+        versionKey: false,
     }
 )
 
@@ -41,7 +41,7 @@ const thoughtSchema = new Schema(
     createdAt: {
         type: Date,
         default: Date.now,
-        //Use a getter method to format the timestamp on query
+        get: (createdAtVal) => dateStyle(createdAtVal),
     },
     username: {
         type: String, 
@@ -55,6 +55,7 @@ const thoughtSchema = new Schema(
       getters: true,
     },
     id: false,
+    versionKey: false,
   }
 );
 
